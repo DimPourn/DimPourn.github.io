@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'sha256-qJoFiRtACrql4+DUvGcb/4r+HShMseyRsFgywKjIrlU='; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'sha256-d0z6HPwrtU7PM1fKNGkTEHy7qR6Lv7YAqJwOvdGXl4Y='; img-src 'self' data:; base-uri 'none'; form-action 'none'">
 <title>Dimitris Pournatzis · Cybersecurity</title>
 <meta name="description" content="Cybersecurity student in Athens building threat intelligence tools and a self-hosted Linux homelab. Open to cybersecurity internships and junior roles.">
 <meta name="color-scheme" content="light">
@@ -367,6 +367,7 @@ h2::after {
 .project-media img + img { opacity: 0; }
 
 img.pos-center { object-position: center; }
+img.pos-left { object-position: left top; }
 
 .preview::after {
   content: "";
@@ -376,24 +377,6 @@ img.pos-center { object-position: center; }
   background: linear-gradient(180deg, rgba(17, 22, 31, 0) 40%, rgba(17, 22, 31, 0.28) 100%);
 }
 
-.preview-brand {
-  background:
-    radial-gradient(80% 90% at 88% 6%, #CDDDF3 0%, rgba(205, 221, 243, 0) 62%),
-    radial-gradient(70% 80% at 8% 100%, #E4ECF8 0%, rgba(228, 236, 248, 0) 62%),
-    #F2F5FA;
-}
-
-.preview-brand::after { content: none; }
-
-.preview-brand .watermark {
-  position: absolute;
-  top: -1.75rem;
-  right: -1.75rem;
-  width: 11rem;
-  height: 11rem;
-  fill: #0A66C2;
-  opacity: 0.12;
-}
 
 .card-panel {
   display: flex;
@@ -793,15 +776,15 @@ img.pos-center { object-position: center; }
 <header class="hero">
   <div class="hero-bg" id="hero-bg" aria-hidden="true"></div>
   <div class="wrap">
-    <div class="avatar enter d1" role="img" aria-label="Dimitris Pournatzis">DP</div>
+    <img class="avatar enter d1" src="avatar.webp" alt="Dimitris Pournatzis" width="96" height="96" fetchpriority="high">
     <h1 class="enter d2">Dimitris Pournatzis</h1>
-    <p class="tagline enter d3"><span class="nw">Cybersecurity student ·</span> <span class="nw">Threat intelligence tools ·</span> <span class="nw">Linux homelab</span></p>
+    <p class="tagline enter d3"><span class="nw">Cybersecurity ·</span> <span class="nw">Networking ·</span> <span class="nw">Threat Intelligence ·</span> <span class="nw">Linux</span></p>
     <p class="status enter d4">Open to cybersecurity internships and junior roles</p>
     <div class="actions enter d5">
       <a class="btn btn-primary" href="mailto:dvpournatzis@proton.me"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>Email me</a>
       <a class="btn btn-secondary" href="Dimitris-Pournatzis-CV.pdf"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-file-down"/></svg>Get my CV (PDF)</a>
     </div>
-    <p class="bio enter d6">Computer Science student (cybersecurity path) at Athens University of Economics and Business, based in Athens, Greece. In 2026 I interned at Alpha Bank, supporting log monitoring and alert triage in Microsoft Sentinel. I build tools for working with threat intelligence and run a self-hosted Linux homelab that I secure, monitor, and document.</p>
+    <p class="bio enter d6">Computer Science student at Athens University of Economics and Business, based in Athens, Greece.</p>
   </div>
 </header>
 
@@ -858,26 +841,10 @@ img.pos-center { object-position: center; }
           </span>
         </a>
       </li>
-      <li>
-        <a class="card-link" href="https://dimpourn.github.io/sh_lab/#incidents">
-          <span class="preview" data-loop aria-hidden="true">
-          <img src="previews/casefiles-incidents-640.webp" srcset="previews/casefiles-incidents-640.webp 640w, previews/casefiles-incidents-1280.webp 1280w" sizes="(min-width: 47rem) 21.6rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
-          <img src="previews/casefiles-ir01-640.webp" srcset="previews/casefiles-ir01-640.webp 640w, previews/casefiles-ir01-1280.webp 1280w" sizes="(min-width: 47rem) 21.6rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
-          </span>
-          <span class="card-panel">
-            <span class="card-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-file-check"/></svg></span>
-            <span class="card-text">
-              <span class="card-title">Homelab case files</span>
-              <span class="card-desc">How I check that a fix actually works</span>
-            </span>
-            <svg class="icon arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-up-right"/></svg>
-          </span>
-        </a>
-      </li>
-      <li>
+      <li class="bento-wide">
         <a class="card-link" href="https://www.linkedin.com/in/dimpournatzis/">
-          <span class="preview preview-brand" aria-hidden="true">
-            <svg class="watermark" focusable="false"><use href="#i-linkedin"/></svg>
+          <span class="preview" aria-hidden="true">
+          <img class="pos-left" src="previews/linkedin-profile-640.webp" srcset="previews/linkedin-profile-640.webp 640w, previews/linkedin-profile-1280.webp 1280w" sizes="(min-width: 47rem) 44rem, calc(100vw - 2.5rem)" width="1280" height="684" alt="" loading="lazy" decoding="async">
           </span>
           <span class="card-panel">
             <span class="card-icon brand-linkedin"><svg class="icon icon-fill" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg></span>
