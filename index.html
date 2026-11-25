@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'sha256-ZzTOtVLuQhPZuS37OSAogaWVB3K+vPle6zLchGOXrIs='; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'sha256-qJoFiRtACrql4+DUvGcb/4r+HShMseyRsFgywKjIrlU='; img-src 'self' data:; base-uri 'none'; form-action 'none'">
 <title>Dimitris Pournatzis · Cybersecurity</title>
 <meta name="description" content="Cybersecurity student in Athens building threat intelligence tools and a self-hosted Linux homelab. Open to cybersecurity internships and junior roles.">
 <meta name="color-scheme" content="light">
@@ -30,9 +30,13 @@
   --tint: #F4F0E8;
   --ok: #2E7A4C;
   --ok-ring: #D9EADD;
+  --glass: rgba(255, 255, 255, 0.9);
+  --lift: 0 18px 38px -20px rgba(26, 26, 26, 0.4);
+  --ease-out: cubic-bezier(0.2, 0.75, 0.25, 1);
+  --pad: max(1.25rem, env(safe-area-inset-left), env(safe-area-inset-right));
+  --radius: 1.25rem;
   --sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", "DejaVu Sans Mono", monospace;
-  --radius: 14px;
   color-scheme: light;
 }
 
@@ -43,25 +47,27 @@ html {
 
 body {
   margin: 0;
-  padding: 0 max(1.25rem, env(safe-area-inset-right)) env(safe-area-inset-bottom) max(1.25rem, env(safe-area-inset-left));
   background: var(--bg);
   color: var(--text);
   font-family: var(--sans);
   font-size: 1rem;
   line-height: 1.6;
   overflow-wrap: break-word;
+  overflow-x: clip;
 }
 
-header, main, footer {
-  max-width: 40rem;
+.wrap {
+  max-width: calc(44rem + 2 * var(--pad));
   margin-inline: auto;
+  padding-inline: var(--pad);
 }
 
 ::selection { background: #D5DDEA; }
 
 a { color: var(--accent); }
 
-a:focus-visible {
+a:focus-visible,
+button:focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 3px;
 }
@@ -80,26 +86,97 @@ a:focus-visible {
 
 .nw { white-space: nowrap; }
 
-/* Profile */
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
 
-.profile {
-  padding-top: 2.5rem;
+.icon {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon-fill {
+  fill: currentColor;
+  stroke: none;
+}
+
+.skip {
+  position: absolute;
+  z-index: 20;
+  top: 0.75rem;
+  left: var(--pad);
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: var(--accent);
+  color: #FFFFFF;
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-300%);
+}
+
+.skip:focus { transform: none; }
+
+/* Hero */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  padding-top: 3rem;
   text-align: center;
 }
+
+.hero-bg {
+  position: absolute;
+  inset: 0 0 -6rem;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(55% 60% at 14% 8%, #D7E0EE 0%, rgba(215, 224, 238, 0) 70%),
+    radial-gradient(50% 55% at 88% 4%, #EEE1C9 0%, rgba(238, 225, 201, 0) 70%),
+    var(--bg);
+  -webkit-mask-image: linear-gradient(#000 55%, transparent);
+  mask-image: linear-gradient(#000 55%, transparent);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 -6rem;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(min(44rem, 100%) 24rem at 50% 44%, rgba(250, 248, 243, 0.74) 0%, rgba(250, 248, 243, 0) 72%);
+}
+
+.hero-bg canvas {
+  opacity: 0;
+  transition: opacity 1.6s ease;
+}
+
+.hero-bg.is-live canvas { opacity: 1; }
 
 .avatar {
   display: grid;
   place-items: center;
-  width: 5.5rem;
-  height: 5.5rem;
+  width: 6rem;
+  height: 6rem;
   margin: 0 auto 1.25rem;
   border-radius: 50%;
-  background: var(--accent);
+  background: linear-gradient(150deg, #2B4E88 0%, #1F3A68 55%, #15294B 100%);
   color: #FFFFFF;
-  font-size: 1.875rem;
+  font-size: 2rem;
   font-weight: 650;
   letter-spacing: 0.02em;
-  box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--border-strong);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.92), 0 0 0 5px rgba(31, 58, 104, 0.16), 0 14px 32px -12px rgba(31, 58, 104, 0.55);
   user-select: none;
 }
 
@@ -110,16 +187,16 @@ img.avatar {
 
 h1 {
   margin: 0;
-  font-size: clamp(1.875rem, 1.45rem + 1.9vw, 2.375rem);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  font-size: clamp(2rem, 1.45rem + 2.4vw, 2.75rem);
+  font-weight: 750;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
   text-wrap: balance;
 }
 
 .tagline {
   max-width: 36rem;
-  margin: 0.5rem auto 0;
+  margin: 0.625rem auto 0;
   color: var(--muted);
   line-height: 1.5;
   text-wrap: balance;
@@ -127,13 +204,15 @@ h1 {
 
 .status {
   display: inline-block;
-  margin: 1rem 0 0;
-  padding: 0.4rem 0.9rem;
-  border: 1px solid var(--border);
+  margin: 1.125rem 0 0;
+  padding: 0.4rem 0.95rem;
+  border: 1px solid rgba(210, 202, 186, 0.8);
   border-radius: 1.25rem;
-  background: var(--surface);
+  background: rgba(255, 255, 255, 0.78);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 550;
   line-height: 1.4;
   text-wrap: balance;
 }
@@ -155,61 +234,76 @@ h1 {
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.75rem;
-  max-width: 26rem;
+  max-width: 27rem;
   margin: 1.5rem auto 0;
 }
 
 .btn {
   display: inline-flex;
-  flex: 1 1 9.5rem;
+  flex: 1 1 11.5rem;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   min-height: 3rem;
   padding: 0.75rem 1.25rem;
   border: 1.5px solid var(--accent);
-  border-radius: 0.75rem;
+  border-radius: 0.875rem;
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.2;
   text-align: center;
   text-decoration: none;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition: transform 0.18s var(--ease-out), box-shadow 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
 }
+
+.btn .icon { width: 1.125rem; height: 1.125rem; }
 
 .btn-primary {
   background: var(--accent);
   color: #FFFFFF;
+  box-shadow: 0 6px 16px -10px rgba(31, 58, 104, 0.7);
 }
 
 .btn-secondary {
-  background: var(--surface);
+  background: rgba(255, 255, 255, 0.85);
   color: var(--accent);
 }
 
-.btn-primary:active { background: var(--accent-strong); border-color: var(--accent-strong); }
-.btn-secondary:active { background: var(--tint); }
+.btn:active { transform: scale(0.98); }
 
 .bio {
-  max-width: 34rem;
+  max-width: 35rem;
   margin: 1.5rem auto 0;
   text-wrap: pretty;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .enter { animation: enter 0.75s var(--ease-out) both; }
+  .d1 { animation-delay: 0.04s; }
+  .d2 { animation-delay: 0.11s; }
+  .d3 { animation-delay: 0.18s; }
+  .d4 { animation-delay: 0.25s; }
+  .d5 { animation-delay: 0.32s; }
+  .d6 { animation-delay: 0.39s; }
+}
+
+@keyframes enter {
+  from { opacity: 0; transform: translateY(14px); }
+}
+
 /* Sections */
 
-#links, section {
-  margin-top: 3.5rem;
-}
+#links, main > section { margin-top: 3.5rem; }
 
 h2 {
   display: flex;
   align-items: center;
   gap: 0.875rem;
-  margin: 0 0 1rem;
+  margin: 0 0 1.125rem;
   font-size: 1.25rem;
-  font-weight: 650;
+  font-weight: 700;
   line-height: 1.3;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
 }
 
 h2::after {
@@ -219,31 +313,115 @@ h2::after {
   background: var(--border);
 }
 
-/* Link cards */
+/* Link cards with screenshot previews */
 
-.cards {
+.bento {
   display: grid;
-  gap: 0.75rem;
+  gap: 0.875rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .card-link {
+  position: relative;
+  isolation: isolate;
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  min-height: 4.5rem;
-  padding: 1rem 1.25rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  min-height: 14rem;
+  padding: 0.625rem;
+  overflow: hidden;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--surface);
+  background: var(--tint);
   color: inherit;
   text-decoration: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04);
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
-.card-link:active { background: var(--tint); }
+.bento-wide .card-link { min-height: 16rem; }
+
+.preview {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: #11161F;
+  transition: transform 0.7s var(--ease-out);
+}
+
+.preview img,
+.project-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.preview img + img,
+.project-media img + img { opacity: 0; }
+
+img.pos-center { object-position: center; }
+
+.preview::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(180deg, rgba(17, 22, 31, 0) 40%, rgba(17, 22, 31, 0.28) 100%);
+}
+
+.preview-brand {
+  background:
+    radial-gradient(80% 90% at 88% 6%, #CDDDF3 0%, rgba(205, 221, 243, 0) 62%),
+    radial-gradient(70% 80% at 8% 100%, #E4ECF8 0%, rgba(228, 236, 248, 0) 62%),
+    #F2F5FA;
+}
+
+.preview-brand::after { content: none; }
+
+.preview-brand .watermark {
+  position: absolute;
+  top: -1.75rem;
+  right: -1.75rem;
+  width: 11rem;
+  height: 11rem;
+  fill: #0A66C2;
+  opacity: 0.12;
+}
+
+.card-panel {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 0.875rem;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  backdrop-filter: blur(14px) saturate(1.3);
+  box-shadow: 0 8px 22px -14px rgba(17, 22, 31, 0.45);
+}
+
+.card-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--tint);
+  color: var(--accent);
+}
+
+.card-icon.brand-github { background: #FFFFFF; color: #181717; }
+.card-icon.brand-linkedin { background: #FFFFFF; color: #0A66C2; }
 
 .card-text {
   display: flex;
@@ -256,44 +434,57 @@ h2::after {
 .card-title {
   color: var(--accent);
   font-size: 1.0625rem;
-  font-weight: 600;
-  line-height: 1.35;
+  font-weight: 650;
+  line-height: 1.3;
 }
 
 .card-desc {
   color: var(--muted);
-  font-size: 0.9375rem;
-  line-height: 1.45;
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 .arrow {
-  flex: none;
-  width: 1.25rem;
-  height: 1.25rem;
   color: var(--accent);
-  transition: transform 0.15s ease;
+  transition: transform 0.25s var(--ease-out);
 }
+
+.card-link:active { transform: scale(0.995); }
 
 /* Projects */
 
 .projects {
   display: grid;
-  gap: 1rem;
+  gap: 1.125rem;
 }
 
 .project {
-  padding: 1.375rem 1.25rem 0.75rem;
+  overflow: hidden;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
 }
 
-.project.featured {
-  padding: 1.75rem 1.5rem 1rem;
-  border-color: var(--border-strong);
+.project.featured { border-color: var(--border-strong); }
+
+.project-media {
+  position: relative;
+  height: clamp(11rem, 46vw, 15rem);
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  background: #11161F;
 }
 
+.project.featured .project-media { height: clamp(12.5rem, 52vw, 18rem); }
+
+.project-body { padding: 1.25rem 1.25rem 0.875rem; }
+
+.project.featured .project-body { padding: 1.5rem 1.5rem 1rem; }
+
 .label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
   margin: 0 0 0.5rem;
   color: var(--muted);
   font-family: var(--mono);
@@ -301,10 +492,17 @@ h2::after {
   line-height: 1.5;
 }
 
+.label .icon {
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.06rem;
+  color: var(--accent);
+}
+
 .project h3 {
   margin: 0 0 0.625rem;
   font-size: 1.1875rem;
-  font-weight: 650;
+  font-weight: 700;
   line-height: 1.3;
   letter-spacing: -0.01em;
 }
@@ -343,7 +541,7 @@ h2::after {
   display: flex;
   flex-wrap: wrap;
   gap: 0.375rem;
-  margin: 1rem 0 0;
+  margin: 1rem 0 0.375rem;
   padding: 0;
   list-style: none;
 }
@@ -364,7 +562,7 @@ h2::after {
   align-items: center;
   gap: 0.375rem;
   min-height: 2.75rem;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
   font-weight: 600;
   text-decoration: underline;
   text-decoration-color: var(--accent-line);
@@ -372,10 +570,7 @@ h2::after {
   text-underline-offset: 0.22em;
 }
 
-.action .arrow {
-  width: 1.125rem;
-  height: 1.125rem;
-}
+.action .icon { width: 1.125rem; height: 1.125rem; }
 
 /* Experience, education and training */
 
@@ -386,30 +581,53 @@ h2::after {
 }
 
 .entries li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
   padding: 0.875rem 0;
   border-bottom: 1px solid var(--border);
 }
 
 .entries li:first-child { padding-top: 0.25rem; }
 
+.entries p { margin: 0; }
+
+.entry-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-top: 0.125rem;
+  border: 1px solid var(--border);
+  border-radius: 0.625rem;
+  background: var(--surface);
+  color: var(--accent);
+}
+
+.entry-icon .icon { width: 1.125rem; height: 1.125rem; }
+
 /* Contact */
 
-footer {
-  padding-bottom: 3rem;
+.site-footer {
+  padding-top: 3.5rem;
+  padding-bottom: 6rem;
 }
 
 .contact {
   padding: 2rem 1.25rem 1.25rem;
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) + 4px);
-  background: var(--surface);
+  background:
+    radial-gradient(70% 90% at 50% 0%, rgba(215, 224, 238, 0.55) 0%, rgba(215, 224, 238, 0) 70%),
+    var(--surface);
   text-align: center;
 }
 
 .contact h2 {
   display: block;
-  font-size: 1.5rem;
   margin-bottom: 0.5rem;
+  font-size: 1.625rem;
 }
 
 .contact h2::after { content: none; }
@@ -440,7 +658,7 @@ footer {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0 0.5rem;
+  gap: 0 0.375rem;
   margin: 1rem 0 0;
   padding: 0;
   list-style: none;
@@ -449,107 +667,226 @@ footer {
 .more a {
   display: inline-flex;
   align-items: center;
+  gap: 0.4rem;
   min-height: 2.75rem;
   padding: 0 0.625rem;
-  border-radius: 0.375rem;
-  font-weight: 500;
+  border-radius: 0.5rem;
+  font-weight: 550;
   text-decoration: underline;
   text-decoration-color: var(--accent-line);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.22em;
 }
 
+.more .icon { width: 1.0625rem; height: 1.0625rem; }
+.more .brand-linkedin { color: #0A66C2; }
+.more .brand-github { color: #181717; }
+
+/* Pause control for the moving parts (shown only when something moves) */
+
+.motion-toggle {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.88);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: var(--accent);
+  box-shadow: 0 8px 20px -10px rgba(26, 26, 26, 0.45);
+  cursor: pointer;
+  transition: transform 0.18s var(--ease-out);
+}
+
+.motion-toggle[hidden] { display: none; }
+.motion-toggle .icon { width: 1.125rem; height: 1.125rem; }
+.motion-toggle .i-play { display: none; }
+.motion-toggle[data-paused="true"] .i-pause { display: none; }
+.motion-toggle[data-paused="true"] .i-play { display: block; }
+.motion-toggle:active { transform: scale(0.94); }
+
 /* Hover only where a pointer can hover, so taps don't leave sticky states */
 
 @media (hover: hover) {
-  .btn-primary:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
-  .btn-secondary:hover { background: var(--tint); }
-  .card-link:hover {
-    border-color: var(--border-strong);
-    box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04), 0 4px 14px rgba(26, 26, 26, 0.05);
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary:hover {
+    background: var(--accent-strong);
+    border-color: var(--accent-strong);
+    box-shadow: 0 10px 22px -10px rgba(31, 58, 104, 0.75);
   }
+  .btn-secondary:hover { background: #FFFFFF; box-shadow: 0 10px 22px -14px rgba(31, 58, 104, 0.5); }
+  .btn:active { transform: scale(0.98); }
+  .card-link:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-strong);
+    box-shadow: var(--lift);
+  }
+  .card-link:hover .preview { transform: scale(1.03); }
   .card-link:hover .arrow,
-  .action:hover .arrow { transform: translateX(3px); }
+  .action:hover .arrow { transform: translate(2px, -2px); }
+  .card-link:active { transform: translateY(-1px) scale(0.995); }
   .action:hover,
   .more a:hover { text-decoration-color: currentColor; }
+  .motion-toggle:hover { transform: translateY(-1px); }
 }
 
-@media (min-width: 48rem) {
-  .profile { padding-top: 4.5rem; }
-  #links, section { margin-top: 4.5rem; }
-  .project { padding: 1.625rem 1.75rem 1rem; }
-  .project.featured { padding: 2rem 2rem 1.25rem; }
+@media (min-width: 47rem) {
+  .hero { padding-top: 4.5rem; }
+  #links, main > section { margin-top: 4.5rem; }
+  .bento { grid-template-columns: 1fr 1fr; }
+  .bento-wide { grid-column: 1 / -1; }
+  .bento-wide .card-link { min-height: 18rem; }
+  .card-link { min-height: 15rem; }
+  .project-body { padding: 1.5rem 1.75rem 1rem; }
+  .project.featured .project-body { padding: 1.75rem 2rem 1.25rem; }
   .contact { padding: 2.5rem 2rem 1.5rem; }
-  footer { padding-bottom: 4.5rem; }
+  .site-footer { padding-top: 4.5rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { transition: none !important; }
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .card-link:hover,
+  .card-link:hover .preview,
+  .card-link:hover .arrow,
+  .btn:hover { transform: none; }
 }
 </style>
+<script src="vendor/gsap.min.js" defer></script>
+<script src="vendor/ScrollTrigger.min.js" defer></script>
+<script src="app.js" defer></script>
 </head>
 <body>
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <!-- Icons: Lucide 1.61.0 (ISC); GitHub and LinkedIn marks: Bootstrap Icons 1.13.2 (MIT). Licences in vendor/. -->
+  <symbol id="i-server" viewBox="0 0 24 24"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></symbol>
+  <symbol id="i-smartphone" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></symbol>
+  <symbol id="i-file-check" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="m9 15 2 2 4-4"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></symbol>
+  <symbol id="i-file-down" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></symbol>
+  <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+  <symbol id="i-briefcase" viewBox="0 0 24 24"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></symbol>
+  <symbol id="i-graduation-cap" viewBox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></symbol>
+  <symbol id="i-award" viewBox="0 0 24 24"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></symbol>
+  <symbol id="i-languages" viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></symbol>
+  <symbol id="i-shield-check" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-radar" viewBox="0 0 24 24"><path d="M19.07 4.93A10 10 0 0 0 6.99 3.34"/><path d="M4 6h.01"/><path d="M2.29 9.62A10 10 0 1 0 21.31 8.35"/><path d="M16.24 7.76A6 6 0 1 0 8.23 16.67"/><path d="M12 18h.01"/><path d="M17.99 11.66A6 6 0 0 1 15.77 16.67"/><circle cx="12" cy="12" r="2"/><path d="m13.41 10.59 5.66-5.66"/></symbol>
+  <symbol id="i-scan-search" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/><path d="m16 16-1.9-1.9"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="3" width="5" height="18" rx="1"/><rect x="5" y="3" width="5" height="18" rx="1"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></symbol>
+  <symbol id="i-github" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></symbol>
+  <symbol id="i-linkedin" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></symbol>
+</svg>
 
-<header class="profile">
-  <div class="avatar" role="img" aria-label="Dimitris Pournatzis">DP</div>
-  <h1>Dimitris Pournatzis</h1>
-  <p class="tagline"><span class="nw">Cybersecurity student ·</span> <span class="nw">Threat intelligence tools ·</span> <span class="nw">Linux homelab</span></p>
-  <p class="status">Open to cybersecurity internships and junior roles</p>
-  <div class="actions">
-    <a class="btn btn-primary" href="mailto:dvpournatzis@proton.me">Email me</a>
-    <a class="btn btn-secondary" href="Dimitris-Pournatzis-CV.pdf">Get my CV (PDF)</a>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="hero">
+  <div class="hero-bg" id="hero-bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="avatar enter d1" role="img" aria-label="Dimitris Pournatzis">DP</div>
+    <h1 class="enter d2">Dimitris Pournatzis</h1>
+    <p class="tagline enter d3"><span class="nw">Cybersecurity student ·</span> <span class="nw">Threat intelligence tools ·</span> <span class="nw">Linux homelab</span></p>
+    <p class="status enter d4">Open to cybersecurity internships and junior roles</p>
+    <div class="actions enter d5">
+      <a class="btn btn-primary" href="mailto:dvpournatzis@proton.me"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>Email me</a>
+      <a class="btn btn-secondary" href="Dimitris-Pournatzis-CV.pdf"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-file-down"/></svg>Get my CV (PDF)</a>
+    </div>
+    <p class="bio enter d6">Computer Science student (cybersecurity path) at Athens University of Economics and Business, based in Athens, Greece. In 2026 I interned at Alpha Bank, supporting log monitoring and alert triage in Microsoft Sentinel. I build tools for working with threat intelligence and run a self-hosted Linux homelab that I secure, monitor, and document.</p>
   </div>
-  <p class="bio">Computer Science student (cybersecurity path) at Athens University of Economics and Business, based in Athens, Greece. In 2026 I interned at Alpha Bank, supporting log monitoring and alert triage in Microsoft Sentinel. I build tools for working with threat intelligence and run a self-hosted Linux homelab that I secure, monitor, and document.</p>
 </header>
 
-<main>
+<main id="main" class="wrap">
 
   <nav id="links" aria-labelledby="links-title">
     <h2 id="links-title">Find my work</h2>
-    <ul class="cards">
-      <li>
+    <ul class="bento">
+      <li class="bento-wide">
         <a class="card-link" href="https://dimpourn.github.io/sh_lab/">
-          <span class="card-text">
-            <span class="card-title">Explore my homelab</span>
-            <span class="card-desc">How I built, secured, and monitor my self-hosted lab</span>
+          <span class="preview" data-loop aria-hidden="true">
+          <img src="previews/homelab-desk-640.webp" srcset="previews/homelab-desk-640.webp 640w, previews/homelab-desk-1280.webp 1280w" sizes="(min-width: 47rem) 44rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
+          <img class="pos-center" src="previews/homelab-board-640.webp" srcset="previews/homelab-board-640.webp 640w, previews/homelab-board-1280.webp 1280w" sizes="(min-width: 47rem) 44rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
           </span>
-          <svg class="arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11.5M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="card-panel">
+            <span class="card-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-server"/></svg></span>
+            <span class="card-text">
+              <span class="card-title">Explore my homelab</span>
+              <span class="card-desc">How I built, secured, and monitor my self-hosted lab</span>
+            </span>
+            <svg class="icon arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-up-right"/></svg>
+          </span>
         </a>
       </li>
       <li>
         <a class="card-link" href="https://dimpourn.github.io/DimPournCV/">
-          <span class="card-text">
-            <span class="card-title">Interactive CV</span>
-            <span class="card-desc">A phone-style version of my CV</span>
+          <span class="preview" data-loop aria-hidden="true">
+          <img class="pos-center" src="previews/cv-lock-640.webp" srcset="previews/cv-lock-640.webp 640w, previews/cv-lock-1280.webp 1280w" sizes="(min-width: 47rem) 21.6rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
+          <img class="pos-center" src="previews/cv-open-640.webp" srcset="previews/cv-open-640.webp 640w, previews/cv-open-1280.webp 1280w" sizes="(min-width: 47rem) 21.6rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
           </span>
-          <svg class="arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11.5M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="card-panel">
+            <span class="card-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-smartphone"/></svg></span>
+            <span class="card-text">
+              <span class="card-title">Interactive CV</span>
+              <span class="card-desc">A phone-style version of my CV</span>
+            </span>
+            <svg class="icon arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-up-right"/></svg>
+          </span>
         </a>
       </li>
       <li>
         <a class="card-link" href="https://github.com/DimPourn">
-          <span class="card-text">
-            <span class="card-title">GitHub</span>
-            <span class="card-desc">My code and repositories</span>
+          <span class="preview" data-loop aria-hidden="true">
+          <img src="previews/github-profile-640.webp" srcset="previews/github-profile-640.webp 640w, previews/github-profile-1280.webp 1280w" sizes="(min-width: 47rem) 21.6rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
+          <img src="previews/github-pinned-640.webp" srcset="previews/github-pinned-640.webp 640w, previews/github-pinned-1280.webp 1280w" sizes="(min-width: 47rem) 21.6rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
           </span>
-          <svg class="arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11.5M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="card-panel">
+            <span class="card-icon brand-github"><svg class="icon icon-fill" aria-hidden="true" focusable="false"><use href="#i-github"/></svg></span>
+            <span class="card-text">
+              <span class="card-title">GitHub</span>
+              <span class="card-desc">My code and repositories</span>
+            </span>
+            <svg class="icon arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-up-right"/></svg>
+          </span>
         </a>
       </li>
       <li>
         <a class="card-link" href="https://dimpourn.github.io/sh_lab/#incidents">
-          <span class="card-text">
-            <span class="card-title">Homelab case files</span>
-            <span class="card-desc">How I check that a fix actually works</span>
+          <span class="preview" data-loop aria-hidden="true">
+          <img src="previews/casefiles-incidents-640.webp" srcset="previews/casefiles-incidents-640.webp 640w, previews/casefiles-incidents-1280.webp 1280w" sizes="(min-width: 47rem) 21.6rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
+          <img src="previews/casefiles-ir01-640.webp" srcset="previews/casefiles-ir01-640.webp 640w, previews/casefiles-ir01-1280.webp 1280w" sizes="(min-width: 47rem) 21.6rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
           </span>
-          <svg class="arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11.5M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="card-panel">
+            <span class="card-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-file-check"/></svg></span>
+            <span class="card-text">
+              <span class="card-title">Homelab case files</span>
+              <span class="card-desc">How I check that a fix actually works</span>
+            </span>
+            <svg class="icon arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-up-right"/></svg>
+          </span>
         </a>
       </li>
       <li>
         <a class="card-link" href="https://www.linkedin.com/in/dimpournatzis/">
-          <span class="card-text">
-            <span class="card-title">LinkedIn</span>
-            <span class="card-desc">Connect with me</span>
+          <span class="preview preview-brand" aria-hidden="true">
+            <svg class="watermark" focusable="false"><use href="#i-linkedin"/></svg>
           </span>
-          <svg class="arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11.5M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="card-panel">
+            <span class="card-icon brand-linkedin"><svg class="icon icon-fill" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg></span>
+            <span class="card-text">
+              <span class="card-title">LinkedIn</span>
+              <span class="card-desc">Connect with me</span>
+            </span>
+            <svg class="icon arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-up-right"/></svg>
+          </span>
         </a>
       </li>
     </ul>
@@ -560,42 +897,60 @@ footer {
     <div class="projects">
 
       <article class="project featured" id="homelab" aria-labelledby="homelab-title">
-        <p class="label">Personal infrastructure · Hardening and monitoring</p>
-        <h3 id="homelab-title">My self-hosted security homelab</h3>
-        <p class="desc">My homelab runs on a Raspberry Pi 5. Six network layers separate the internet from any service. Containers start with nothing and get only what they need; I review updates. Quiet failures reach my phone as alerts, a path I tested end to end with a synthetic alert. I test the alert rules too: a real zero stays quiet, missing data fires, restored data clears. I write up fixes with their proof and list what the setup doesn't cover.</p>
-        <ul class="tags" aria-label="Tags">
-          <li>Raspberry Pi 5</li>
-          <li>Prometheus</li>
-          <li>Grafana</li>
-          <li>Alertmanager</li>
-        </ul>
-        <a class="action" href="https://dimpourn.github.io/sh_lab/">Explore the homelab<svg class="arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11.5M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="project-media" data-loop aria-hidden="true">
+          <img src="previews/homelab-signals-640.webp" srcset="previews/homelab-signals-640.webp 640w, previews/homelab-signals-1280.webp 1280w" sizes="(min-width: 47rem) 44rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
+          <img src="previews/homelab-hardening-640.webp" srcset="previews/homelab-hardening-640.webp 640w, previews/homelab-hardening-1280.webp 1280w" sizes="(min-width: 47rem) 44rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
+          <img src="previews/homelab-stackup-640.webp" srcset="previews/homelab-stackup-640.webp 640w, previews/homelab-stackup-1280.webp 1280w" sizes="(min-width: 47rem) 44rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
+        </div>
+        <div class="project-body">
+          <p class="label"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-shield-check"/></svg>Personal infrastructure · Hardening and monitoring</p>
+          <h3 id="homelab-title">My self-hosted security homelab</h3>
+          <p class="desc">My homelab runs on a Raspberry Pi 5. Six network layers separate the internet from any service. Containers start with nothing and get only what they need; I review updates. Quiet failures reach my phone as alerts, a path I tested end to end with a synthetic alert. I test the alert rules too: a real zero stays quiet, missing data fires, restored data clears. I write up fixes with their proof and list what the setup doesn't cover.</p>
+          <ul class="tags" aria-label="Tags">
+            <li>Raspberry Pi 5</li>
+            <li>Prometheus</li>
+            <li>Grafana</li>
+            <li>Alertmanager</li>
+          </ul>
+          <a class="action" href="https://dimpourn.github.io/sh_lab/">Explore the homelab<svg class="icon arrow" aria-hidden="true" focusable="false"><use href="#i-arrow-up-right"/></svg></a>
+        </div>
       </article>
 
       <article class="project" id="sentinel" aria-labelledby="sentinel-title">
-        <p class="label">Personal project · Cyber threat intelligence</p>
-        <h3 id="sentinel-title">Sentinel Linux</h3>
-        <p class="desc">Sentinel Linux is a local evidence workspace I built with Codex. It collects public CISA Known Exploited Vulnerabilities records, matches them against my watchlists, adds FIRST EPSS scores to help me prioritize, and produces briefings that cite their sources. It helps me answer one question: which vulnerability deserves a closer look, and which source backs that up? It's built on FastAPI and React and runs in rootless Podman.</p>
-        <ul class="tags" aria-label="Tags">
-          <li>CISA KEV</li>
-          <li>FIRST EPSS</li>
-          <li>FastAPI</li>
-          <li>React</li>
-        </ul>
-        <a class="action" href="mailto:dvpournatzis@proton.me?subject=Sentinel%20Linux">Ask me for a walkthrough<span class="vh"> of Sentinel Linux</span><svg class="arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11.5M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="project-media" data-loop aria-hidden="true">
+          <img class="pos-center" src="previews/sentinel-map-640.webp" srcset="previews/sentinel-map-640.webp 640w, previews/sentinel-map-1280.webp 1280w" sizes="(min-width: 47rem) 44rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
+          <img src="previews/sentinel-dashboard-640.webp" srcset="previews/sentinel-dashboard-640.webp 640w, previews/sentinel-dashboard-1280.webp 1280w" sizes="(min-width: 47rem) 44rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
+          <img src="previews/sentinel-briefings-640.webp" srcset="previews/sentinel-briefings-640.webp 640w, previews/sentinel-briefings-1280.webp 1280w" sizes="(min-width: 47rem) 44rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
+        </div>
+        <div class="project-body">
+          <p class="label"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-radar"/></svg>Personal project · Cyber threat intelligence</p>
+          <h3 id="sentinel-title">Sentinel Linux</h3>
+          <p class="desc">Sentinel Linux is a local evidence workspace I built with Codex. It collects public CISA Known Exploited Vulnerabilities records, matches them against my watchlists, adds FIRST EPSS scores to help me prioritize, and produces briefings that cite their sources. It helps me answer one question: which vulnerability deserves a closer look, and which source backs that up? It's built on FastAPI and React and runs in rootless Podman.</p>
+          <ul class="tags" aria-label="Tags">
+            <li>CISA KEV</li>
+            <li>FIRST EPSS</li>
+            <li>FastAPI</li>
+            <li>React</li>
+          </ul>
+        </div>
       </article>
 
       <article class="project" id="case-lab" aria-labelledby="case-lab-title">
-        <p class="label">Training project · Investigation practice</p>
-        <h3 id="case-lab-title">Cyber Case Lab</h3>
-        <p class="desc">Cyber Case Lab is a training project: a local investigation workbench where I practice working a case from evidence to report. I select log excerpts, draft a timeline, follow each citation back to its source line, review findings, and export a Markdown case report. A staged fictional incident makes me record a decision before the next piece of evidence is revealed.</p>
-        <p class="soon"><span class="soon-tag">Coming soon</span><span class="vh">: </span>Suggestions from the CyberCodex model, each checked against the cited evidence before I accept it.</p>
-        <ul class="tags" aria-label="Tags">
-          <li>Log analysis</li>
-          <li>Timelines</li>
-          <li>Markdown reports</li>
-        </ul>
-        <a class="action" href="mailto:dvpournatzis@proton.me?subject=Cyber%20Case%20Lab">Ask me for a walkthrough<span class="vh"> of Cyber Case Lab</span><svg class="arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11.5M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="project-media" data-loop aria-hidden="true">
+          <img src="previews/caselab-stage1-640.webp" srcset="previews/caselab-stage1-640.webp 640w, previews/caselab-stage1-1280.webp 1280w" sizes="(min-width: 47rem) 44rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
+          <img src="previews/caselab-stage3-640.webp" srcset="previews/caselab-stage3-640.webp 640w, previews/caselab-stage3-1280.webp 1280w" sizes="(min-width: 47rem) 44rem, calc(100vw - 2.5rem)" width="1280" height="800" alt="" loading="lazy" decoding="async">
+        </div>
+        <div class="project-body">
+          <p class="label"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-scan-search"/></svg>Training project · Investigation practice</p>
+          <h3 id="case-lab-title">Cyber Case Lab</h3>
+          <p class="desc">Cyber Case Lab is a training project: a local investigation workbench where I practice working a case from evidence to report. I select log excerpts, draft a timeline, follow each citation back to its source line, review findings, and export a Markdown case report. A staged fictional incident makes me record a decision before the next piece of evidence is revealed.</p>
+          <p class="soon"><span class="soon-tag">Coming soon</span><span class="vh">: </span>Suggestions from the CyberCodex model, each checked against the cited evidence before I accept it.</p>
+          <ul class="tags" aria-label="Tags">
+            <li>Log analysis</li>
+            <li>Timelines</li>
+            <li>Markdown reports</li>
+          </ul>
+        </div>
       </article>
 
     </div>
@@ -604,40 +959,42 @@ footer {
   <section id="experience" aria-labelledby="experience-title">
     <h2 id="experience-title">Experience</h2>
     <ul class="entries">
-      <li><strong>Resilience and Intelligence Intern, Alpha Bank</strong> · Mar–May 2026. Monitored security logs and supported alert triage in Microsoft Sentinel, helped run phishing simulations, and observed threat-intelligence workflows and web application penetration tests.</li>
-      <li><strong>IT Intern, Zippo Hellas / Dritsas Group</strong> · Summer 2023. Supported the company's <span class="nw">e-shop</span> and helped troubleshoot office IT issues.</li>
+      <li><span class="entry-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-briefcase"/></svg></span><p><strong>Resilience and Intelligence Intern, Alpha Bank</strong> · Mar–May 2026. Monitored security logs and supported alert triage in Microsoft Sentinel, helped run phishing simulations, and observed threat-intelligence workflows and web application penetration tests.</p></li>
+      <li><span class="entry-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-briefcase"/></svg></span><p><strong>IT Intern, Zippo Hellas / Dritsas Group</strong> · Summer 2023. Supported the company's <span class="nw">e-shop</span> and helped troubleshoot office IT issues.</p></li>
     </ul>
   </section>
 
   <section id="education" aria-labelledby="education-title">
     <h2 id="education-title">Education and training</h2>
     <ul class="entries">
-      <li><strong>B.Sc. Computer Science (cybersecurity path)</strong>, Athens University of Economics and Business · 2022–2027 (expected)</li>
-      <li><strong>OffSec:</strong> Threat Hunting Foundations badge; Security Essentials (SEC100) and Foundational Threat Hunting (TH-200) learning paths completed</li>
-      <li><strong>Cadmus:</strong> Cyber Regulatory Compliance &amp; Policy Management</li>
-      <li><strong>Languages:</strong> English (Cambridge English C2 Proficiency, CPE) · Japanese (JLPT N5)</li>
-      <li><strong>Community:</strong> ISC2 Student Member; attended the 16th Infocom Security Conference</li>
+      <li><span class="entry-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-graduation-cap"/></svg></span><p><strong>B.Sc. Computer Science (cybersecurity path)</strong>, Athens University of Economics and Business · 2022–2027 (expected)</p></li>
+      <li><span class="entry-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-award"/></svg></span><p><strong>OffSec:</strong> Threat Hunting Foundations badge; Security Essentials (SEC100) and Foundational Threat Hunting (TH-200) learning paths completed</p></li>
+      <li><span class="entry-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-award"/></svg></span><p><strong>Cadmus:</strong> Cyber Regulatory Compliance &amp; Policy Management</p></li>
+      <li><span class="entry-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-languages"/></svg></span><p><strong>Languages:</strong> English (Cambridge English C2 Proficiency, CPE) · Japanese (JLPT N5)</p></li>
+      <li><span class="entry-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-users"/></svg></span><p><strong>Community:</strong> ISC2 Student Member; attended the 16th Infocom Security Conference</p></li>
     </ul>
   </section>
 
 </main>
 
-<footer>
+<footer class="site-footer wrap">
   <section class="contact" id="contact" aria-labelledby="contact-title">
     <h2 id="contact-title">Let's talk</h2>
     <p>I'm looking for cybersecurity internships and junior roles. Email is the best way to reach me.</p>
-    <a class="btn btn-primary btn-lg" href="mailto:dvpournatzis@proton.me">Email me</a>
+    <a class="btn btn-primary btn-lg" href="mailto:dvpournatzis@proton.me"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>Email me</a>
     <p class="email">dvpournatzis@proton.me</p>
     <nav aria-label="More links">
       <ul class="more">
-        <li><a href="https://github.com/DimPourn">GitHub</a></li>
-        <li><a href="https://dimpourn.github.io/DimPournCV/">Interactive CV</a></li>
-        <li><a href="Dimitris-Pournatzis-CV.pdf">CV (PDF)</a></li>
-        <li><a href="https://www.linkedin.com/in/dimpournatzis/">LinkedIn</a></li>
+        <li><a href="https://github.com/DimPourn"><svg class="icon icon-fill brand-github" aria-hidden="true" focusable="false"><use href="#i-github"/></svg>GitHub</a></li>
+        <li><a href="https://dimpourn.github.io/DimPournCV/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-smartphone"/></svg>Interactive CV</a></li>
+        <li><a href="Dimitris-Pournatzis-CV.pdf"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-file-down"/></svg>CV (PDF)</a></li>
+        <li><a href="https://www.linkedin.com/in/dimpournatzis/"><svg class="icon icon-fill brand-linkedin" aria-hidden="true" focusable="false"><use href="#i-linkedin"/></svg>LinkedIn</a></li>
       </ul>
     </nav>
   </section>
 </footer>
+
+<button class="motion-toggle" type="button" data-paused="false" aria-label="Pause motion" title="Pause motion" hidden><svg class="icon i-pause" aria-hidden="true" focusable="false"><use href="#i-pause"/></svg><svg class="icon i-play" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></button>
 
 </body>
 </html>
