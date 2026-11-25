@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'sha256-3tT+v3T/RQSb3qcrXHt7XexQT5ylm5A3dGacxHu4rdI='; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<title>Dimitris Pournatzis · Cybersecurity</title>
+<meta name="description" content="Cybersecurity student in Athens building threat intelligence tools and a self-hosted Linux homelab. Open to cybersecurity internships and junior roles.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#FAF8F3">
+<link rel="canonical" href="https://dimpourn.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dimpourn.github.io/">
+<meta property="og:title" content="Dimitris Pournatzis · Cybersecurity">
+<meta property="og:description" content="Cybersecurity student in Athens building threat intelligence tools and a self-hosted Linux homelab. Open to cybersecurity internships and junior roles.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231F3A68'/%3E%3Ctext x='32' y='41.5' text-anchor='middle' font-family='system-ui,sans-serif' font-size='27' font-weight='700' fill='%23ffffff'%3EDP%3C/text%3E%3C/svg%3E">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --bg: #FAF8F3;
+  --surface: #FFFFFF;
+  --text: #1A1A1A;
+  --muted: #555555;
+  --accent: #1F3A68;
+  --accent-strong: #15294B;
+  --accent-line: rgba(31, 58, 104, 0.35);
+  --border: #E5DFD3;
+  --border-strong: #D2CABA;
+  --tint: #F4F0E8;
+  --ok: #2E7A4C;
+  --ok-ring: #D9EADD;
+  --sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", "DejaVu Sans Mono", monospace;
+  --radius: 14px;
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0 max(1.25rem, env(safe-area-inset-right)) env(safe-area-inset-bottom) max(1.25rem, env(safe-area-inset-left));
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+}
+
+header, main, footer {
+  max-width: 40rem;
+  margin-inline: auto;
+}
+
+::selection { background: #D5DDEA; }
+
+a { color: var(--accent); }
+
+a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.vh {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.nw { white-space: nowrap; }
+
+/* Profile */
+
+.profile {
+  padding-top: 2.5rem;
+  text-align: center;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 5.5rem;
+  height: 5.5rem;
+  margin: 0 auto 1.25rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #FFFFFF;
+  font-size: 1.875rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--border-strong);
+  user-select: none;
+}
+
+img.avatar {
+  display: block;
+  object-fit: cover;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.875rem, 1.45rem + 1.9vw, 2.375rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.tagline {
+  max-width: 36rem;
+  margin: 0.5rem auto 0;
+  color: var(--muted);
+  line-height: 1.5;
+  text-wrap: balance;
+}
+
+.status {
+  display: inline-block;
+  margin: 1rem 0 0;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  background: var(--surface);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-wrap: balance;
+}
+
+.status::before {
+  content: "";
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-right: 0.55rem;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 0 3px var(--ok-ring);
+  vertical-align: 0.06em;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  max-width: 26rem;
+  margin: 1.5rem auto 0;
+}
+
+.btn {
+  display: inline-flex;
+  flex: 1 1 9.5rem;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.75rem 1.25rem;
+  border: 1.5px solid var(--accent);
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #FFFFFF;
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--accent);
+}
+
+.btn-primary:active { background: var(--accent-strong); border-color: var(--accent-strong); }
+.btn-secondary:active { background: var(--tint); }
+
+.bio {
+  max-width: 34rem;
+  margin: 1.5rem auto 0;
+  text-wrap: pretty;
+}
+
+/* Sections */
+
+#links, section {
+  margin-top: 3.5rem;
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  font-weight: 650;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+h2::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Link cards */
+
+.cards {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 4.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card-link:active { background: var(--tint); }
+
+.card-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.card-title {
+  color: var(--accent);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.card-desc {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.arrow {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--accent);
+  transition: transform 0.15s ease;
+}
+
+/* Projects */
+
+.projects {
+  display: grid;
+  gap: 1rem;
+}
+
+.project {
+  padding: 1.375rem 1.25rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.project.featured {
+  padding: 1.75rem 1.5rem 1rem;
+  border-color: var(--border-strong);
+}
+
+.label {
+  margin: 0 0 0.5rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.78125rem;
+  line-height: 1.5;
+}
+
+.project h3 {
+  margin: 0 0 0.625rem;
+  font-size: 1.1875rem;
+  font-weight: 650;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.project.featured h3 {
+  font-size: 1.4375rem;
+  line-height: 1.25;
+}
+
+.project .desc {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tags li {
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+  background: var(--tint);
+  color: #3B3B3B;
+  font-family: var(--mono);
+  font-size: 0.78125rem;
+  line-height: 1.45;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 2.75rem;
+  margin-top: 0.5rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--accent-line);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+.action .arrow {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+/* Experience */
+
+.entry {
+  margin: 0;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Contact */
+
+footer {
+  padding-bottom: 3rem;
+}
+
+.contact {
+  padding: 2rem 1.25rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  background: var(--surface);
+  text-align: center;
+}
+
+.contact h2 {
+  display: block;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.contact h2::after { content: none; }
+
+.contact p {
+  max-width: 28rem;
+  margin: 0 auto;
+  text-wrap: balance;
+}
+
+.btn-lg {
+  width: 100%;
+  max-width: 22rem;
+  min-height: 3.5rem;
+  margin-top: 1.5rem;
+  font-size: 1.125rem;
+}
+
+.contact .email {
+  margin-top: 0.75rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  user-select: all;
+}
+
+.more {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 0.5rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.more a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 0.625rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--accent-line);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+/* Hover only where a pointer can hover, so taps don't leave sticky states */
+
+@media (hover: hover) {
+  .btn-primary:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
+  .btn-secondary:hover { background: var(--tint); }
+  .card-link:hover {
+    border-color: var(--border-strong);
+    box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04), 0 4px 14px rgba(26, 26, 26, 0.05);
+  }
+  .card-link:hover .arrow,
+  .action:hover .arrow { transform: translateX(3px); }
+  .action:hover,
+  .more a:hover { text-decoration-color: currentColor; }
+}
+
+@media (min-width: 48rem) {
+  .profile { padding-top: 4.5rem; }
+  #links, section { margin-top: 4.5rem; }
+  .project { padding: 1.625rem 1.75rem 1rem; }
+  .project.featured { padding: 2rem 2rem 1.25rem; }
+  .contact { padding: 2.5rem 2rem 1.5rem; }
+  footer { padding-bottom: 4.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="profile">
+  <div class="avatar" role="img" aria-label="Dimitris Pournatzis">DP</div>
+  <h1>Dimitris Pournatzis</h1>
+  <p class="tagline"><span class="nw">Cybersecurity student ·</span> <span class="nw">Threat intelligence tools ·</span> <span class="nw">Linux homelab</span></p>
+  <p class="status">Open to cybersecurity internships and junior roles</p>
+  <div class="actions">
+    <a class="btn btn-primary" href="mailto:dvpournatzis@proton.me">Email me</a>
+    <a class="btn btn-secondary" href="https://dimpourn.github.io/DimPournCV/Dimitris-Pournatzis-CV.pdf">Get my CV (PDF)</a>
+  </div>
+  <p class="bio">Information Science student (cybersecurity path) at Athens University of Economics and Business, based in Athens, Greece. I build tools for working with threat intelligence and run a self-hosted Linux homelab that I secure, monitor, and document.</p>
+</header>
+
+<main>
+
+  <nav id="links" aria-labelledby="links-title">
+    <h2 id="links-title">Find my work</h2>
+    <ul class="cards">
+      <li>
+        <a class="card-link" href="https://dimpourn.github.io/sh_lab/">
+          <span class="card-text">
+            <span class="card-title">Explore my homelab</span>
+            <span class="card-desc">How I built, secured, and monitor my self-hosted lab</span>
+          </span>
+          <svg class="arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11.5M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </li>
+      <li>
+        <a class="card-link" href="https://dimpourn.github.io/DimPournCV/">
+          <span class="card-text">
+            <span class="card-title">Interactive CV</span>
+            <span class="card-desc">A phone-style version of my CV</span>
+          </span>
+          <svg class="arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11.5M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </li>
+      <li>
+        <a class="card-link" href="https://github.com/DimPourn">
+          <span class="card-text">
+            <span class="card-title">GitHub</span>
+            <span class="card-desc">My code and repositories</span>
+          </span>
+          <svg class="arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11.5M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </li>
+      <li>
+        <a class="card-link" href="https://dimpourn.github.io/sh_lab/#incidents">
+          <span class="card-text">
+            <span class="card-title">Homelab case files</span>
+            <span class="card-desc">How I check that a fix actually works</span>
+          </span>
+          <svg class="arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11.5M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <section id="work" aria-labelledby="work-title">
+    <h2 id="work-title">Featured projects</h2>
+    <div class="projects">
+
+      <article class="project featured" id="homelab" aria-labelledby="homelab-title">
+        <p class="label">Personal infrastructure · Hardening and monitoring</p>
+        <h3 id="homelab-title">My self-hosted security homelab</h3>
+        <p class="desc">My homelab runs on a Raspberry Pi 5. Six network layers separate the internet from any service. Containers start with nothing and get only what they need; I review updates. Quiet failures reach my phone as alerts, a path I tested end to end with a synthetic alert. I test the alert rules too: a real zero stays quiet, missing data fires, restored data clears. I write up fixes with their proof and list what the setup doesn't cover.</p>
+        <ul class="tags" aria-label="Tags">
+          <li>Raspberry Pi 5</li>
+          <li>Prometheus</li>
+          <li>Grafana</li>
+          <li>Alertmanager</li>
+        </ul>
+        <a class="action" href="https://dimpourn.github.io/sh_lab/">Explore the homelab<svg class="arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11.5M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </article>
+
+      <article class="project" id="sentinel" aria-labelledby="sentinel-title">
+        <p class="label">Personal project · Cyber threat intelligence</p>
+        <h3 id="sentinel-title">Sentinel Linux</h3>
+        <p class="desc">Sentinel Linux is a local evidence workspace I built with Codex. It collects public CISA Known Exploited Vulnerabilities records, matches them against my watchlists, adds FIRST EPSS scores to help me prioritize, and produces briefings that cite their sources. It helps me answer one question: which vulnerability deserves a closer look, and which source backs that up? It's built on FastAPI and React and runs in rootless Podman.</p>
+        <ul class="tags" aria-label="Tags">
+          <li>CISA KEV</li>
+          <li>FIRST EPSS</li>
+          <li>FastAPI</li>
+          <li>React</li>
+        </ul>
+        <a class="action" href="mailto:dvpournatzis@proton.me?subject=Sentinel%20Linux">Ask me for a walkthrough<span class="vh"> of Sentinel Linux</span><svg class="arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11.5M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </article>
+
+      <article class="project" id="case-lab" aria-labelledby="case-lab-title">
+        <p class="label">Training project · Investigation practice</p>
+        <h3 id="case-lab-title">Cyber Case Lab</h3>
+        <p class="desc">Cyber Case Lab is a training project: a local investigation workbench where I practice working a case from evidence to report. I select log excerpts, draft a timeline, follow each citation back to its source line, review findings, and export a Markdown case report. A staged fictional incident makes me record a decision before the next piece of evidence is revealed.</p>
+        <ul class="tags" aria-label="Tags">
+          <li>Log analysis</li>
+          <li>Timelines</li>
+          <li>Markdown reports</li>
+        </ul>
+        <a class="action" href="mailto:dvpournatzis@proton.me?subject=Cyber%20Case%20Lab">Ask me for a walkthrough<span class="vh"> of Cyber Case Lab</span><svg class="arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11.5M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </article>
+
+    </div>
+  </section>
+
+  <section id="experience" aria-labelledby="experience-title">
+    <h2 id="experience-title">Experience</h2>
+    <p class="entry"><strong>IT Intern, Zippo Hellas / Dritsas Group</strong> · Summer 2023. Supported the company's <span class="nw">e-shop</span> and helped troubleshoot office IT issues.</p>
+  </section>
+
+</main>
+
+<footer>
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <h2 id="contact-title">Let's talk</h2>
+    <p>I'm looking for cybersecurity internships and junior roles. Email is the best way to reach me.</p>
+    <a class="btn btn-primary btn-lg" href="mailto:dvpournatzis@proton.me">Email me</a>
+    <p class="email">dvpournatzis@proton.me</p>
+    <nav aria-label="More links">
+      <ul class="more">
+        <li><a href="https://github.com/DimPourn">GitHub</a></li>
+        <li><a href="https://dimpourn.github.io/DimPournCV/">Interactive CV</a></li>
+        <li><a href="https://dimpourn.github.io/DimPournCV/Dimitris-Pournatzis-CV.pdf">CV (PDF)</a></li>
+      </ul>
+    </nav>
+  </section>
+</footer>
+
+</body>
+</html>
