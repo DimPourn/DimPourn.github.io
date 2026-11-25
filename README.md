@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://dimpourn.github.io/">
-    <img src="og.jpg" width="820" alt="The page's opening screen: Dimitris Pournatzis's photo and name, the line Cybersecurity, Networking, Threat Intelligence, Linux, a badge saying open to junior SOC, Blue Team and threat intelligence roles, and buttons to email him or get his CV">
+    <img src="og.jpg" width="820" alt="The page's opening screen: the name Dimitris Pournatzis, the line Cybersecurity, Networking, Threat Intelligence, Linux, a badge saying open to junior SOC, Blue Team and threat intelligence roles, and buttons to email him or get his CV">
   </a>
 </p>
 
