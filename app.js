@@ -1,8 +1,8 @@
 /*
  * Motion layer: screenshot crossfades (GSAP + ScrollTrigger) and the Vanta fog
- * behind the profile. All of it is optional. Without JavaScript, with reduced
+ * behind the whole page. All of it is optional. Without JavaScript, with reduced
  * motion, or with the pause button pressed, every card keeps its first
- * screenshot and the hero keeps its static gradient.
+ * screenshot and the page keeps its static gradient.
  */
 (() => {
   "use strict";
@@ -13,7 +13,7 @@
 
   const KEY = "dp-motion";
   const toggle = document.querySelector(".motion-toggle");
-  const heroBg = document.getElementById("hero-bg");
+  const bgHost = document.getElementById("page-bg");
   let paused = false;
   try { paused = localStorage.getItem(KEY) === "off"; } catch (e) { /* storage blocked: default to playing */ }
 
@@ -64,11 +64,10 @@
     }
   });
 
-  /* Vanta fog: loaded after the page is up, never on Save-Data or without WebGL. */
+  /* Vanta fog behind the whole page: loaded after the page is up, never on Save-Data or without WebGL. */
 
   let vanta = null;
   let loading = null;
-  let heroVisible = true;
 
   const load = (src) => new Promise((resolve, reject) => {
     const script = document.createElement("script");
@@ -91,11 +90,11 @@
   const syncVanta = () => {
     if (!vanta) return;
     window.cancelAnimationFrame(vanta.req);
-    if (!paused && heroVisible && !document.hidden) vanta.animationLoop();
+    if (!paused && !document.hidden) vanta.animationLoop();
   };
 
   const startVanta = () => {
-    if (vanta || loading || !heroBg || paused) return;
+    if (vanta || loading || !bgHost || paused) return;
     const connection = navigator.connection;
     if ((connection && connection.saveData) || !webgl()) return;
     loading = load("vendor/three.r134.min.js")
@@ -104,36 +103,30 @@
         if (!window.VANTA || !window.VANTA.FOG) return;
         const dpr = window.devicePixelRatio || 1;
         vanta = window.VANTA.FOG({
-          el: heroBg,
+          el: bgHost,
           THREE: window.THREE,
           mouseControls: false,
           touchControls: false,
           gyroControls: false,
           minHeight: 200,
           minWidth: 200,
-          scale: dpr,              // render at 1x: the fog is soft anyway
-          scaleMobile: dpr / 0.75, // and a little lower on phones
+          scale: dpr / 0.75,       // the fog is soft, so 0.75x pixels look the same
+          scaleMobile: dpr / 0.6,  // and cost less on phones
           highlightColor: 0xffffff,
-          midtoneColor: 0xe3d0ae,
-          lowlightColor: 0xb2c3df,
+          midtoneColor: 0xb9cbea,
+          lowlightColor: 0xf2c9a2,
           baseColor: 0xfaf8f3,
-          blurFactor: 0.56,
-          speed: 1.1,
-          zoom: 0.7,
+          blurFactor: 0.48,
+          speed: 1.2,
+          zoom: 0.85,
         });
-        requestAnimationFrame(() => requestAnimationFrame(() => heroBg.classList.add("is-live")));
+        requestAnimationFrame(() => requestAnimationFrame(() => bgHost.classList.add("is-live")));
         syncVanta();
       })
       .catch(() => { /* keep the static gradient */ })
       .finally(() => { loading = null; });
   };
 
-  ScrollTrigger.create({
-    trigger: ".hero",
-    start: "top bottom",
-    end: "bottom top",
-    onToggle: (self) => { heroVisible = self.isActive; syncVanta(); },
-  });
 
   const kick = () => {
     const idle = window.requestIdleCallback || ((fn) => window.setTimeout(fn, 250));
