@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'sha256-rKxRpQUHPamohX2Bv/I+RtEJciJioCkUeDCXx5k2ffo='; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'sha256-rKxRpQUHPamohX2Bv/I+RtEJciJioCkUeDCXx5k2ffo='; img-src 'self' data:; base-uri 'none'; form-action 'none'; require-trusted-types-for 'script'; trusted-types dp-loader">
 <title>Dimitris Pournatzis · Cybersecurity</title>
 <meta name="description" content="Cybersecurity student in Athens building threat intelligence tools and a self-hosted Linux homelab. Open to junior SOC, Blue Team and threat intelligence roles.">
 <meta name="color-scheme" content="light">
@@ -730,9 +730,9 @@ img.pos-left { object-position: left top; }
   .btn:hover { transform: none; }
 }
 </style>
-<script src="vendor/gsap.min.js" defer></script>
-<script src="vendor/ScrollTrigger.min.js" defer></script>
-<script src="app.js" defer></script>
+<script src="vendor/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" defer></script>
+<script src="vendor/ScrollTrigger.min.js" integrity="sha384-P8VzCVnT9NBUkMrpcIZrJbA7EBjJvh/fJS6PmP+4nLIM284DtsImIv8D0fFjIkeh" defer></script>
+<script src="app.js?v=2" defer></script>
 </head>
 <body>
 <svg class="sprite" aria-hidden="true" focusable="false">

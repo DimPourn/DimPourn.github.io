@@ -47,7 +47,7 @@ flowchart TD
   C -- yes --> S["Static page<br/>first screenshot per card, static gradient"]
   C -- no --> D["app.js<br/>screenshot crossfades, pause button"]
   D --> E{"Save-Data, no WebGL<br/>or paused?"}
-  E -- no --> F["three.js r134, then Vanta FOG<br/>from vendor/, after the page loads"]
+  E -- no --> F["Trusted Types policy dp-loader<br/>three.js r134, then Vanta FOG, SRI on each"]
   E -- yes --> G["Keep the static gradient"]
 ```
 
@@ -56,14 +56,15 @@ flowchart TD
 | Control | Implementation | How to check |
 | --- | --- | --- |
 | Content Security Policy | `default-src 'none'`, `script-src 'self'`, `style-src` pinned to the sha256 of the one `<style>` block, `img-src 'self' data:`, `base-uri 'none'`, `form-action 'none'`; no inline scripts and no `style=""` attributes | The browser console shows no violations; the hash command under [Editing the page](#editing-the-page) matches the policy |
+| Trusted Types | `require-trusted-types-for 'script'`; the only policy allowed, `dp-loader`, accepts the three.js and Vanta URLs and nothing else; no HTML injection sinks in the page's code or its libraries | The browser console shows no violations |
+| Subresource Integrity | sha384 on all four vendor scripts, including the two loaded on demand | `openssl dgst -sha384 -binary <file> \| base64` matches the hash in `index.html` or `app.js` |
 | No third-party requests | System fonts, an inline SVG icon sprite and self-hosted libraries | `default-src 'none'` blocks every other origin |
 | Pinned dependencies | GSAP 3.13.0; three.js r134 and Vanta 0.5.24, both checked against the `vanta@0.5.24` npm tarball | [`vendor/README.txt`](vendor/README.txt) |
 | Clean media | The photo, screenshots and link preview carry no EXIF, GPS or XMP data; the CV PDF has no embedded attachments | `magick identify -verbose <file>`, `qpdf --list-attachments <pdf>` |
 | Vulnerability contact | [`security.txt`](.well-known/security.txt) (RFC 9116), covering every site under dimpourn.github.io | — |
 
-Known limits: GitHub Pages cannot set HTTP headers, so `frame-ancestors`, HSTS and
-`X-Content-Type-Options` are not available. The two scripts that draw the fog are loaded on demand
-and are not yet pinned with Subresource Integrity.
+Known limit: GitHub Pages cannot set HTTP headers, so `frame-ancestors`, HSTS and
+`X-Content-Type-Options` are not available.
 
 ## Preview locally
 
@@ -85,6 +86,9 @@ Binding to `127.0.0.1` keeps the server off your local network.
   python3 -c "import re,hashlib,base64;s=open('index.html').read();b=re.search(r'<style>(.*?)</style>',s,re.S).group(1);h=base64.b64encode(hashlib.sha256(b.encode()).digest()).decode();print(h,'matches the CSP' if h in s else 'not in the CSP: update style-src')"
   ```
 
+- **A new vendor file needs a new integrity hash** in `index.html` (GSAP) or `app.js` (three.js,
+  Vanta), or the browser refuses to run it:
+  `openssl dgst -sha384 -binary vendor/<file> | base64`.
 - **Screenshots** in `previews/` are captured at 1280×800 and saved as WebP twice, 640 and
   1280 px wide, for `srcset`. Strip metadata when saving, for example
   `magick in.png -strip -quality 80 out-1280.webp`.

@@ -64,14 +64,33 @@
     }
   });
 
-  /* Vanta fog behind the whole page: loaded after the page is up, never on Save-Data or without WebGL. */
+  /* Vanta fog behind the whole page: loaded after the page is up, never on Save-Data or without WebGL.
+     The page enforces Trusted Types, so the two scripts load through one policy that accepts exactly
+     these two same-origin URLs, and each is pinned with Subresource Integrity. */
 
   let vanta = null;
   let loading = null;
 
+  const VENDOR = {
+    "vendor/three.r134.min.js": "sha384-6JMjvWMbjz7sgX+2wWN9USRlYRMu9iGVCA4jbNQJnfM5F0gIxmerqx3X97e+MZG9",
+    "vendor/vanta.fog.min.js": "sha384-6pWFXNNSqb0oVNIZRz63YH5+lolGdFdCh23nHfD7SI3PIW69QAVOvVl/0pkWLG62",
+  };
+  let policy = null;
+  if (window.trustedTypes && window.trustedTypes.createPolicy) {
+    try {
+      policy = window.trustedTypes.createPolicy("dp-loader", {
+        createScriptURL: (url) => {
+          if (Object.prototype.hasOwnProperty.call(VENDOR, url)) return url;
+          throw new TypeError("dp-loader refused " + url);
+        },
+      });
+    } catch (e) { policy = null; /* no policy: the fog stays off, the gradient stays */ }
+  }
+
   const load = (src) => new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = src;
+    script.src = policy ? policy.createScriptURL(src) : src;
+    script.integrity = VENDOR[src];
     script.async = true;
     script.onload = resolve;
     script.onerror = reject;
