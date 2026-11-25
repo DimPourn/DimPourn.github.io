@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'sha256-3tT+v3T/RQSb3qcrXHt7XexQT5ylm5A3dGacxHu4rdI='; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'sha256-ZzTOtVLuQhPZuS37OSAogaWVB3K+vPle6zLchGOXrIs='; img-src 'self' data:; base-uri 'none'; form-action 'none'">
 <title>Dimitris Pournatzis · Cybersecurity</title>
 <meta name="description" content="Cybersecurity student in Athens building threat intelligence tools and a self-hosted Linux homelab. Open to cybersecurity internships and junior roles.">
 <meta name="color-scheme" content="light">
@@ -319,6 +319,26 @@ h2::after {
   text-wrap: pretty;
 }
 
+.soon {
+  margin: 0.875rem 0 0;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.soon-tag {
+  display: inline-block;
+  margin-right: 0.5rem;
+  padding: 0 0.45rem;
+  border: 1px solid var(--accent-line);
+  border-radius: 0.375rem;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  vertical-align: 0.08em;
+}
+
 .tags {
   display: flex;
   flex-wrap: wrap;
@@ -357,13 +377,20 @@ h2::after {
   height: 1.125rem;
 }
 
-/* Experience */
+/* Experience, education and training */
 
-.entry {
+.entries {
   margin: 0;
-  padding: 1rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.entries li {
+  padding: 0.875rem 0;
   border-bottom: 1px solid var(--border);
 }
+
+.entries li:first-child { padding-top: 0.25rem; }
 
 /* Contact */
 
@@ -470,9 +497,9 @@ footer {
   <p class="status">Open to cybersecurity internships and junior roles</p>
   <div class="actions">
     <a class="btn btn-primary" href="mailto:dvpournatzis@proton.me">Email me</a>
-    <a class="btn btn-secondary" href="https://dimpourn.github.io/DimPournCV/Dimitris-Pournatzis-CV.pdf">Get my CV (PDF)</a>
+    <a class="btn btn-secondary" href="Dimitris-Pournatzis-CV.pdf">Get my CV (PDF)</a>
   </div>
-  <p class="bio">Information Science student (cybersecurity path) at Athens University of Economics and Business, based in Athens, Greece. I build tools for working with threat intelligence and run a self-hosted Linux homelab that I secure, monitor, and document.</p>
+  <p class="bio">Computer Science student (cybersecurity path) at Athens University of Economics and Business, based in Athens, Greece. In 2026 I interned at Alpha Bank, supporting log monitoring and alert triage in Microsoft Sentinel. I build tools for working with threat intelligence and run a self-hosted Linux homelab that I secure, monitor, and document.</p>
 </header>
 
 <main>
@@ -516,6 +543,15 @@ footer {
           <svg class="arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11.5M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </li>
+      <li>
+        <a class="card-link" href="https://www.linkedin.com/in/dimpournatzis/">
+          <span class="card-text">
+            <span class="card-title">LinkedIn</span>
+            <span class="card-desc">Connect with me</span>
+          </span>
+          <svg class="arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4 10h11.5M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </li>
     </ul>
   </nav>
 
@@ -553,6 +589,7 @@ footer {
         <p class="label">Training project · Investigation practice</p>
         <h3 id="case-lab-title">Cyber Case Lab</h3>
         <p class="desc">Cyber Case Lab is a training project: a local investigation workbench where I practice working a case from evidence to report. I select log excerpts, draft a timeline, follow each citation back to its source line, review findings, and export a Markdown case report. A staged fictional incident makes me record a decision before the next piece of evidence is revealed.</p>
+        <p class="soon"><span class="soon-tag">Coming soon</span><span class="vh">: </span>Suggestions from the CyberCodex model, each checked against the cited evidence before I accept it.</p>
         <ul class="tags" aria-label="Tags">
           <li>Log analysis</li>
           <li>Timelines</li>
@@ -566,7 +603,21 @@ footer {
 
   <section id="experience" aria-labelledby="experience-title">
     <h2 id="experience-title">Experience</h2>
-    <p class="entry"><strong>IT Intern, Zippo Hellas / Dritsas Group</strong> · Summer 2023. Supported the company's <span class="nw">e-shop</span> and helped troubleshoot office IT issues.</p>
+    <ul class="entries">
+      <li><strong>Resilience and Intelligence Intern, Alpha Bank</strong> · Mar–May 2026. Monitored security logs and supported alert triage in Microsoft Sentinel, helped run phishing simulations, and observed threat-intelligence workflows and web application penetration tests.</li>
+      <li><strong>IT Intern, Zippo Hellas / Dritsas Group</strong> · Summer 2023. Supported the company's <span class="nw">e-shop</span> and helped troubleshoot office IT issues.</li>
+    </ul>
+  </section>
+
+  <section id="education" aria-labelledby="education-title">
+    <h2 id="education-title">Education and training</h2>
+    <ul class="entries">
+      <li><strong>B.Sc. Computer Science (cybersecurity path)</strong>, Athens University of Economics and Business · 2022–2027 (expected)</li>
+      <li><strong>OffSec:</strong> Threat Hunting Foundations badge; Security Essentials (SEC100) and Foundational Threat Hunting (TH-200) learning paths completed</li>
+      <li><strong>Cadmus:</strong> Cyber Regulatory Compliance &amp; Policy Management</li>
+      <li><strong>Languages:</strong> English (Cambridge English C2 Proficiency, CPE) · Japanese (JLPT N5)</li>
+      <li><strong>Community:</strong> ISC2 Student Member; attended the 16th Infocom Security Conference</li>
+    </ul>
   </section>
 
 </main>
@@ -581,7 +632,8 @@ footer {
       <ul class="more">
         <li><a href="https://github.com/DimPourn">GitHub</a></li>
         <li><a href="https://dimpourn.github.io/DimPournCV/">Interactive CV</a></li>
-        <li><a href="https://dimpourn.github.io/DimPournCV/Dimitris-Pournatzis-CV.pdf">CV (PDF)</a></li>
+        <li><a href="Dimitris-Pournatzis-CV.pdf">CV (PDF)</a></li>
+        <li><a href="https://www.linkedin.com/in/dimpournatzis/">LinkedIn</a></li>
       </ul>
     </nav>
   </section>
