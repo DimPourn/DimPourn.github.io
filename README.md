@@ -9,7 +9,6 @@
 <p align="center">
   <a href="https://dimpourn.github.io/"><b>Live site</b></a> ·
   <a href="https://dimpourn.github.io/DimPournCV/">Interactive CV</a> ·
-  <a href="https://dimpourn.github.io/Dimitris-Pournatzis-CV.pdf">PDF CV</a> ·
   <a href="https://dimpourn.github.io/sh_lab/">Homelab</a> ·
   <a href="https://www.linkedin.com/in/dimpournatzis/">LinkedIn</a>
 </p>
@@ -60,7 +59,7 @@ flowchart TD
 | Subresource Integrity | sha384 on all four vendor scripts, including the two loaded on demand | `openssl dgst -sha384 -binary <file> \| base64` matches the hash in `index.html` or `app.js` |
 | No third-party requests | System fonts, an inline SVG icon sprite and self-hosted libraries | `default-src 'none'` blocks every other origin |
 | Pinned dependencies | GSAP 3.13.0; three.js r134 and Vanta 0.5.24, both checked against the `vanta@0.5.24` npm tarball | [`vendor/README.txt`](vendor/README.txt) |
-| Clean media | The photo, screenshots and link preview carry no EXIF, GPS or XMP data; the CV PDF has no embedded attachments | `magick identify -verbose <file>`, `qpdf --list-attachments <pdf>` |
+| Clean media | The photo, screenshots and link preview carry no EXIF, GPS or XMP data | `magick identify -verbose <file>` |
 | Vulnerability contact | [`security.txt`](.well-known/security.txt) (RFC 9116), covering every site under dimpourn.github.io | — |
 
 Known limit: GitHub Pages cannot set HTTP headers, so `frame-ancestors`, HSTS and
@@ -105,7 +104,6 @@ Binding to `127.0.0.1` keeps the server off your local network.
 | `og.jpg` | 1200×630 link preview |
 | `previews/` | Screenshots used by the cards |
 | `vendor/` | GSAP, three.js and Vanta, with their licences |
-| `Dimitris-Pournatzis-CV.pdf` | The PDF CV, also linked from the interactive CV |
 | `.well-known/security.txt` | Security contact for the whole domain |
 | `.nojekyll` | Tells GitHub Pages to serve the files as they are, without Jekyll |
 
