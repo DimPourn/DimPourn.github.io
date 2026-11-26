@@ -20,10 +20,9 @@ a strict Content Security Policy and no third-party requests.
 
 ## The page
 
-- **Hero:** photo, name, focus areas, the roles I'm looking for, and buttons to email me or
-  download my CV.
-- **Find my work:** cards for my homelab site, my interactive CV, GitHub and LinkedIn, each with
-  real screenshots of the page it links to.
+- **Hero:** photo, name, focus areas, the roles I'm looking for, and a button to email me.
+- **Find my work:** cards for my homelab site, my interactive CV and GitHub, each with real
+  screenshots of the page it links to, and LinkedIn, with an abstract network wallpaper.
 - **Featured projects:** my security homelab, Sentinel Linux (a local workspace for CISA KEV and
   FIRST EPSS data) and Cyber Case Lab (a workbench for practising investigations).
 - **Let's talk:** email and links.
@@ -102,7 +101,7 @@ Binding to `127.0.0.1` keeps the server off your local network.
 | `app.js` | Motion layer: crossfades, Vanta fog, pause button |
 | `avatar.webp` | Profile photo |
 | `og.jpg` | 1200×630 link preview |
-| `previews/` | Screenshots used by the cards |
+| `previews/` | Screenshots and artwork used by the cards |
 | `vendor/` | GSAP, three.js and Vanta, with their licences |
 | `.well-known/security.txt` | Security contact for the whole domain |
 | `.nojekyll` | Tells GitHub Pages to serve the files as they are, without Jekyll |
@@ -110,7 +109,7 @@ Binding to `127.0.0.1` keeps the server off your local network.
 ## License
 
 © Dimitris Pournatzis. My own text, design, code and photo are licensed under
-[CC BY-NC-ND 4.0](LICENSE.md). The screenshots show my own projects and profiles; the GitHub and
-LinkedIn interfaces in them belong to their owners. Third-party files keep their own licences:
+[CC BY-NC-ND 4.0](LICENSE.md). The screenshots show my own projects and profiles; the GitHub
+interface in them belongs to its owner. Third-party files keep their own licences:
 GSAP (standard no-charge licence), three.js and Vanta (MIT), Lucide icons (ISC) and the Bootstrap
 Icons GitHub and LinkedIn marks (MIT). See [`vendor/README.txt`](vendor/README.txt).
